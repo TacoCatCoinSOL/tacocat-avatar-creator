@@ -2,259 +2,130 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#080b12">
-  <title>TacoCat Avatar Creator V4</title>
+  <title>TacoCat Customizer V5</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <main class="app">
     <header class="topbar">
       <div>
-        <p class="eyebrow">TACOCAT LABS // PREMIUM AVATAR CREATOR</p>
+        <p class="eyebrow">TACOCAT LABS // AVATAR CREATOR V5</p>
         <h1>Create Your Crew Identity</h1>
-        <p class="subtitle">A more detailed TacoCat, with live customization and a stronger cinematic look.</p>
+        <p class="subtitle">Rotate TacoCat, inspect every angle, and prepare your Crew identity.</p>
       </div>
-      <span class="status">📡 SIGNAL ONLINE</span>
+      <span class="status"><span class="status-dot"></span> SIGNAL ONLINE</span>
     </header>
 
     <section class="layout">
       <article class="viewer-card">
         <div class="viewer-head">
-          <span>LIVE AVATAR</span>
-          <span>TACOCAT CREW MEMBER</span>
+          <span>360° VIEWER</span>
+          <span id="viewLabel">FRONT VIEW</span>
         </div>
 
-        <div class="viewer">
-          <svg id="avatarSvg" viewBox="0 0 760 760" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Premium customizable TacoCat avatar">
-            <defs>
-              <radialGradient id="bgGlow" cx="50%" cy="38%" r="70%">
-                <stop offset="0%" stop-color="#2c233e"/>
-                <stop offset="55%" stop-color="#11182b"/>
-                <stop offset="100%" stop-color="#070b12"/>
-              </radialGradient>
-              <linearGradient id="furLight" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#f2a44c"/>
-                <stop offset="100%" stop-color="#b9581e"/>
-              </linearGradient>
-              <linearGradient id="jacket" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#2a303b"/>
-                <stop offset="40%" stop-color="#171b24"/>
-                <stop offset="100%" stop-color="#080b11"/>
-              </linearGradient>
-              <linearGradient id="spaceSuit" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#f4f7fb"/>
-                <stop offset="100%" stop-color="#9daabd"/>
-              </linearGradient>
-              <linearGradient id="hoodie" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#6f45de"/>
-                <stop offset="100%" stop-color="#29105b"/>
-              </linearGradient>
-              <filter id="shadow" x="-40%" y="-40%" width="180%" height="180%">
-                <feDropShadow dx="0" dy="20" stdDeviation="18" flood-opacity=".45"/>
-              </filter>
-              <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="8" result="blur"/>
-                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-              </filter>
-            </defs>
-
-            <rect width="760" height="760" rx="42" fill="url(#bgGlow)"/>
-            <g opacity=".75">
-              <circle cx="100" cy="100" r="3" fill="#fff"/>
-              <circle cx="635" cy="92" r="2.4" fill="#fff"/>
-              <circle cx="680" cy="235" r="4" fill="#f29b2f"/>
-              <circle cx="126" cy="290" r="2.5" fill="#89a7ff"/>
-              <circle cx="615" cy="610" r="3.2" fill="#fff"/>
-              <circle cx="185" cy="640" r="3.5" fill="#f29b2f"/>
-              <circle cx="380" cy="74" r="2" fill="#fff"/>
-            </g>
-            <circle cx="380" cy="360" r="275" fill="#f39224" opacity=".05"/>
-            <ellipse cx="380" cy="673" rx="205" ry="36" fill="#000" opacity=".4"/>
-
-            <g id="cat" filter="url(#shadow)">
-              <path id="tail" d="M518 520 C645 500 670 615 575 647 C520 665 485 612 532 580 C571 555 566 527 520 545"
-                    fill="none" stroke="#d9812f" stroke-width="58" stroke-linecap="round"/>
-              <path id="tailStripe1" d="M587 533 C617 553 622 583 606 604" fill="none" stroke="#8e451b" stroke-width="14" stroke-linecap="round"/>
-              <path id="tailStripe2" d="M548 558 C571 574 576 595 565 615" fill="none" stroke="#8e451b" stroke-width="14" stroke-linecap="round"/>
-
-              <path id="leftLeg" d="M264 535 Q248 605 264 648 Q292 674 333 648 L338 525 Z" fill="#d9812f" stroke="#2b1713" stroke-width="13"/>
-              <path id="rightLeg" d="M422 525 L427 648 Q468 674 496 648 Q512 605 496 535 Z" fill="#d9812f" stroke="#2b1713" stroke-width="13"/>
-              <ellipse id="leftFoot" cx="299" cy="655" rx="58" ry="29" fill="#d9812f" stroke="#2b1713" stroke-width="11"/>
-              <ellipse id="rightFoot" cx="461" cy="655" rx="58" ry="29" fill="#d9812f" stroke="#2b1713" stroke-width="11"/>
-
-              <path id="bodyBase" d="M225 392 Q235 324 300 306 L460 306 Q525 324 535 392 L548 568 Q380 620 212 568 Z"
-                    fill="#d9812f" stroke="#2b1713" stroke-width="14"/>
-
-              <path id="leftEar" d="M265 245 L232 102 L335 196 Z" fill="#d9812f" stroke="#2b1713" stroke-width="14"/>
-              <path id="rightEar" d="M495 245 L528 102 L425 196 Z" fill="#d9812f" stroke="#2b1713" stroke-width="14"/>
-              <path d="M275 205 L253 140 L321 193 Z" fill="#efa69f" opacity=".9"/>
-              <path d="M485 205 L507 140 L439 193 Z" fill="#efa69f" opacity=".9"/>
-
-              <circle id="head" cx="380" cy="294" r="147" fill="#d9812f" stroke="#2b1713" stroke-width="14"/>
-
-              <path id="stripe1" d="M335 170 L352 232" stroke="#8e451b" stroke-width="15" stroke-linecap="round"/>
-              <path id="stripe2" d="M380 154 L380 229" stroke="#8e451b" stroke-width="15" stroke-linecap="round"/>
-              <path id="stripe3" d="M425 170 L408 232" stroke="#8e451b" stroke-width="15" stroke-linecap="round"/>
-              <path id="cheekStripeL1" d="M270 288 L304 296" stroke="#8e451b" stroke-width="11" stroke-linecap="round"/>
-              <path id="cheekStripeL2" d="M272 318 L305 318" stroke="#8e451b" stroke-width="11" stroke-linecap="round"/>
-              <path id="cheekStripeR1" d="M490 288 L456 296" stroke="#8e451b" stroke-width="11" stroke-linecap="round"/>
-              <path id="cheekStripeR2" d="M488 318 L455 318" stroke="#8e451b" stroke-width="11" stroke-linecap="round"/>
-
-              <ellipse cx="335" cy="340" rx="62" ry="48" fill="#f1d4ad"/>
-              <ellipse cx="425" cy="340" rx="62" ry="48" fill="#f1d4ad"/>
-              <path d="M366 318 Q380 332 394 318 Q380 349 366 318" fill="#8b4a4e"/>
-              <path d="M380 345 Q358 369 338 352" fill="none" stroke="#2b1713" stroke-width="8" stroke-linecap="round"/>
-              <path d="M380 345 Q402 369 422 352" fill="none" stroke="#2b1713" stroke-width="8" stroke-linecap="round"/>
-              <path d="M300 353 L194 335 M303 376 L190 377 M460 353 L566 335 M457 376 L570 377"
-                    stroke="#2b1713" stroke-width="7" stroke-linecap="round"/>
-
-              <ellipse id="leftEye" cx="330" cy="282" rx="32" ry="38" fill="#efa32e"/>
-              <ellipse id="rightEye" cx="430" cy="282" rx="32" ry="38" fill="#efa32e"/>
-              <ellipse cx="330" cy="287" rx="11" ry="20" fill="#17120f"/>
-              <ellipse cx="430" cy="287" rx="11" ry="20" fill="#17120f"/>
-              <ellipse cx="338" cy="270" rx="8" ry="10" fill="#fff" opacity=".9"/>
-              <ellipse cx="438" cy="270" rx="8" ry="10" fill="#fff" opacity=".9"/>
-
-              <g id="feminineDetails" style="display:none">
-                <path d="M292 248 Q330 220 360 247" fill="none" stroke="#2b1713" stroke-width="8" stroke-linecap="round"/>
-                <path d="M400 247 Q430 220 468 248" fill="none" stroke="#2b1713" stroke-width="8" stroke-linecap="round"/>
-                <path d="M490 178 Q548 137 570 191 Q533 235 486 210 Z" fill="#ed5798" stroke="#2b1713" stroke-width="8"/>
-                <circle cx="525" cy="192" r="14" fill="#ffd6e7"/>
-              </g>
-
-              <g id="outfitExplorer">
-                <path d="M220 397 Q380 335 540 397 L553 570 Q380 628 207 570 Z" fill="url(#jacket)" stroke="#0d1016" stroke-width="13"/>
-                <path d="M380 360 L380 588" stroke="#f0a132" stroke-width="8"/>
-                <path d="M257 411 L318 388 L333 520 L251 528 Z" fill="#151922" stroke="#464d59" stroke-width="5"/>
-                <path d="M503 411 L442 388 L427 520 L509 528 Z" fill="#151922" stroke="#464d59" stroke-width="5"/>
-                <path d="M237 397 Q380 330 523 397" fill="none" stroke="#3a404b" stroke-width="10"/>
-                <circle cx="380" cy="474" r="54" fill="#f39224"/>
-                <text x="380" y="461" text-anchor="middle" font-size="40">🌮🐱</text>
-                <text x="380" y="500" text-anchor="middle" font-size="24" font-weight="900" fill="#15110b">TACOCAT</text>
-                <path d="M245 550 Q380 590 515 550" fill="none" stroke="#262d37" stroke-width="8"/>
-              </g>
-
-              <g id="outfitSpace" style="display:none">
-                <path d="M218 397 Q380 332 542 397 L556 570 Q380 630 204 570 Z" fill="url(#spaceSuit)" stroke="#4f5a6c" stroke-width="13"/>
-                <path d="M250 428 L510 428" stroke="#6a768a" stroke-width="11"/>
-                <rect x="314" y="455" width="132" height="84" rx="16" fill="#24324a"/>
-                <circle cx="348" cy="497" r="11" fill="#66d9ff"/>
-                <circle cx="380" cy="497" r="11" fill="#f5ca4c"/>
-                <circle cx="412" cy="497" r="11" fill="#f16a6a"/>
-                <path d="M224 475 L190 520 M536 475 L570 520" stroke="#738096" stroke-width="17" stroke-linecap="round"/>
-              </g>
-
-              <g id="outfitHoodie" style="display:none">
-                <path d="M215 397 Q380 328 545 397 L560 570 Q380 635 200 570 Z" fill="url(#hoodie)" stroke="#251042" stroke-width="13"/>
-                <path d="M272 399 Q380 310 488 399" fill="none" stroke="#a07af3" stroke-width="28"/>
-                <path d="M342 456 L328 530 M418 456 L432 530" stroke="#fff" stroke-width="8" stroke-linecap="round"/>
-                <circle cx="380" cy="505" r="46" fill="#111827" opacity=".85"/>
-                <text x="380" y="518" text-anchor="middle" font-size="42">📡</text>
-              </g>
-
-              <g id="glassesClassic">
-                <rect x="274" y="246" width="98" height="64" rx="23" fill="#090c11" stroke="#252d38" stroke-width="9"/>
-                <rect x="388" y="246" width="98" height="64" rx="23" fill="#090c11" stroke="#252d38" stroke-width="9"/>
-                <path d="M372 277 L388 277 M274 266 L230 250 M486 266 L530 250" stroke="#252d38" stroke-width="10" stroke-linecap="round"/>
-                <path d="M289 258 L350 253" stroke="#fff" stroke-width="8" opacity=".18" stroke-linecap="round"/>
-                <path d="M403 258 L464 253" stroke="#fff" stroke-width="8" opacity=".18" stroke-linecap="round"/>
-              </g>
-
-              <g id="headset" style="display:none">
-                <path d="M250 302 Q248 165 380 145 Q512 165 510 302" fill="none" stroke="#182131" stroke-width="26" stroke-linecap="round"/>
-                <rect x="226" y="270" width="46" height="98" rx="18" fill="#263653"/>
-                <rect x="488" y="270" width="46" height="98" rx="18" fill="#263653"/>
-                <path d="M512 360 Q538 410 462 428" fill="none" stroke="#263653" stroke-width="11"/>
-                <circle cx="458" cy="429" r="12" fill="#65d6ff" filter="url(#glow)"/>
-              </g>
-
-              <g id="crewCap" style="display:none">
-                <path d="M266 214 Q380 118 494 214 L482 255 Q380 212 278 255 Z" fill="#174ebd" stroke="#0b286c" stroke-width="11"/>
-                <path d="M284 251 Q380 222 505 252 Q447 288 324 269 Z" fill="#10388e" stroke="#0b286c" stroke-width="10"/>
-                <text x="380" y="215" text-anchor="middle" font-size="42">🐱</text>
-              </g>
-
-              <g id="legendaryTaco" style="display:none">
-                <path d="M532 445 Q628 354 692 468 Q610 500 532 445 Z" fill="#efb84c" stroke="#6c4215" stroke-width="10"/>
-                <path d="M555 436 Q610 385 665 454" fill="none" stroke="#5fbb58" stroke-width="20" stroke-linecap="round"/>
-                <circle cx="596" cy="420" r="12" fill="#db4c3f"/>
-                <circle cx="630" cy="438" r="11" fill="#db4c3f"/>
-              </g>
-            </g>
-          </svg>
+        <div class="viewer" id="viewer">
+          <div class="signal-ring"></div>
+          <img id="avatarImage" src="front.jpg" alt="TacoCat front view" draggable="false">
+          <div class="scanline"></div>
+          <div class="drag-tip">Swipe or use the arrows to rotate</div>
         </div>
 
-        <div class="viewer-actions">
-          <button id="randomizeBtn" class="secondary">🎲 Randomize</button>
-          <button id="saveBtn" class="primary">⬇ Save TacoCat</button>
+        <div class="rotation-controls">
+          <button id="rotateLeft" class="round-button" type="button" aria-label="Rotate left">←</button>
+          <div class="view-dots" id="viewDots" aria-label="Current angle"></div>
+          <button id="rotateRight" class="round-button" type="button" aria-label="Rotate right">→</button>
         </div>
 
-        <div class="notice">
-          <strong>V4 Premium:</strong> upgraded proportions, face, jacket, stripes, accessories and overall presentation.
+        <div class="action-row">
+          <button id="randomView" class="secondary-button" type="button">⟳ Random Angle</button>
+          <button id="saveView" class="primary-button" type="button">⬇ Save View</button>
         </div>
+
+        <p class="viewer-note">
+          V5 adds five-angle rotation. Full color, eye, outfit and accessory layers will be connected in the next visual build.
+        </p>
       </article>
 
-      <aside class="controls">
-        <section>
-          <h2>Appearance</h2>
+      <aside class="controls-card">
+        <div class="controls-title">
+          <div>
+            <p class="eyebrow">CREW CONFIGURATION</p>
+            <h2>Customizer Controls</h2>
+          </div>
+          <span class="version-pill">V5</span>
+        </div>
+
+        <section class="control-group">
+          <h3>Appearance</h3>
           <div class="segmented">
-            <button class="choice active" data-gender="masculine">Masculine</button>
-            <button class="choice" data-gender="feminine">Feminine</button>
+            <button class="choice active" data-group="appearance" data-value="masculine" type="button">Masculine</button>
+            <button class="choice" data-group="appearance" data-value="feminine" type="button">Feminine</button>
           </div>
         </section>
 
-        <section>
-          <h2>Fur</h2>
-          <div class="swatches" id="furSwatches">
-            <button class="swatch active" data-color="#d9812f" data-stripe="#8e451b" style="--c:#d9812f"></button>
-            <button class="swatch" data-color="#7f8794" data-stripe="#4b505b" style="--c:#7f8794"></button>
-            <button class="swatch" data-color="#2b2c31" data-stripe="#0d0e10" style="--c:#2b2c31"></button>
-            <button class="swatch" data-color="#eee6d5" data-stripe="#c7baa7" style="--c:#eee6d5"></button>
-            <button class="swatch" data-color="#c96767" data-stripe="#813535" style="--c:#c96767"></button>
+        <section class="control-group">
+          <div class="group-heading">
+            <h3>Fur</h3><span class="coming">Layer update</span>
+          </div>
+          <div class="swatches">
+            <button class="swatch active" data-group="fur" data-value="orange" style="--swatch:#d9812f" aria-label="Orange fur" type="button"></button>
+            <button class="swatch" data-group="fur" data-value="cream" style="--swatch:#e7c79f" aria-label="Cream fur" type="button"></button>
+            <button class="swatch" data-group="fur" data-value="gray" style="--swatch:#87919e" aria-label="Gray fur" type="button"></button>
+            <button class="swatch" data-group="fur" data-value="black" style="--swatch:#282b31" aria-label="Black fur" type="button"></button>
           </div>
         </section>
 
-        <section>
-          <h2>Eyes</h2>
-          <div class="swatches" id="eyeSwatches">
-            <button class="swatch active" data-color="#efa32e" style="--c:#efa32e"></button>
-            <button class="swatch" data-color="#62d58a" style="--c:#62d58a"></button>
-            <button class="swatch" data-color="#64c9f4" style="--c:#64c9f4"></button>
-            <button class="swatch" data-color="#b47cff" style="--c:#b47cff"></button>
-            <button class="swatch" data-color="#e45d52" style="--c:#e45d52"></button>
+        <section class="control-group">
+          <div class="group-heading">
+            <h3>Eyes</h3><span class="coming">Layer update</span>
+          </div>
+          <div class="swatches">
+            <button class="swatch active" data-group="eyes" data-value="gold" style="--swatch:#efa32e" aria-label="Gold eyes" type="button"></button>
+            <button class="swatch" data-group="eyes" data-value="green" style="--swatch:#62d98b" aria-label="Green eyes" type="button"></button>
+            <button class="swatch" data-group="eyes" data-value="blue" style="--swatch:#62a7ff" aria-label="Blue eyes" type="button"></button>
+            <button class="swatch" data-group="eyes" data-value="purple" style="--swatch:#ab7cff" aria-label="Purple eyes" type="button"></button>
           </div>
         </section>
 
-        <section>
-          <h2>Outfit</h2>
-          <div class="grid">
-            <button class="option active" data-outfit="Explorer">🧥 Explorer Jacket</button>
-            <button class="option" data-outfit="Space">🚀 Space Suit</button>
-            <button class="option" data-outfit="Hoodie">📡 Signal Hoodie</button>
-            <button class="option locked" data-outfit="Locked">🔒 Chapter 10</button>
+        <section class="control-group">
+          <div class="group-heading">
+            <h3>Outfit</h3><span class="coming">Layer update</span>
+          </div>
+          <div class="option-grid">
+            <button class="option active" data-group="outfit" data-value="explorer" type="button">Explorer Jacket</button>
+            <button class="option" data-group="outfit" data-value="space" type="button">Space Suit</button>
+            <button class="option" data-group="outfit" data-value="hoodie" type="button">Signal Hoodie</button>
+            <button class="option locked" data-group="outfit" data-value="chapter10" type="button" disabled>🔒 Chapter 10</button>
           </div>
         </section>
 
-        <section>
-          <h2>Accessories</h2>
-          <div class="grid">
-            <button class="option active" data-accessory="Classic">🕶️ Classic Glasses</button>
-            <button class="option" data-accessory="Headset">🎧 Headset</button>
-            <button class="option" data-accessory="Cap">🧢 Crew Cap</button>
-            <button class="option" data-accessory="Taco">🌮 Legendary Taco</button>
-            <button class="option" data-accessory="None">None</button>
+        <section class="control-group">
+          <div class="group-heading">
+            <h3>Accessories</h3><span class="coming">Layer update</span>
+          </div>
+          <div class="option-grid compact">
+            <button class="option active" data-group="accessory" data-value="glasses" type="button">Glasses</button>
+            <button class="option" data-group="accessory" data-value="headset" type="button">Headset</button>
+            <button class="option" data-group="accessory" data-value="cap" type="button">Crew Cap</button>
+            <button class="option" data-group="accessory" data-value="taco" type="button">Legendary Taco</button>
+            <button class="option" data-group="accessory" data-value="none" type="button">None</button>
           </div>
         </section>
 
-        <section class="chapter">
-          <span>CHAPTER SYSTEM</span>
-          <strong>1–9 unlocked</strong>
-          <small>Chapter 10 remains locked in this prototype.</small>
-        </section>
+        <div class="chapter-box">
+          <div>
+            <strong>CHAPTER SYSTEM</strong>
+            <span>Chapters 1–9 unlocked</span>
+          </div>
+          <span class="lock">10 🔒</span>
+        </div>
       </aside>
     </section>
   </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <script src="script.js"></script>
 </body>
 </html>

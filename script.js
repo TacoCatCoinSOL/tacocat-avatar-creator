@@ -1,49 +1,121 @@
-const state={gender:"masculine",fur:"#d9812f",stripe:"#8e451b",eyes:"#efa32e",outfit:"Explorer",accessory:"Classic"};
-const $=id=>document.getElementById(id);
-const $$=sel=>[...document.querySelectorAll(sel)];
-function setActive(group,active){group.forEach(b=>b.classList.remove("active"));active.classList.add("active")}
-function show(id,on){const el=$(id);if(el)el.style.display=on?"block":"none"}
-function updateAvatar(){
-  ["head","bodyBase","leftEar","rightEar","leftLeg","rightLeg","leftFoot","rightFoot"].forEach(id=>$(id).setAttribute("fill",state.fur));
-  $("tail").setAttribute("stroke",state.fur);
-  ["stripe1","stripe2","stripe3","cheekStripeL1","cheekStripeL2","cheekStripeR1","cheekStripeR2","tailStripe1","tailStripe2"].forEach(id=>$(id).setAttribute("stroke",state.stripe));
-  $("leftEye").setAttribute("fill",state.eyes);
-  $("rightEye").setAttribute("fill",state.eyes);
-  show("feminineDetails",state.gender==="feminine");
-  ["Explorer","Space","Hoodie"].forEach(name=>show(`outfit${name}`,state.outfit===name));
-  show("glassesClassic",state.accessory==="Classic");
-  show("headset",state.accessory==="Headset");
-  show("crewCap",state.accessory==="Cap");
-  show("legendaryTaco",state.accessory==="Taco");
-}
-$$("[data-gender]").forEach(btn=>btn.addEventListener("click",()=>{state.gender=btn.dataset.gender;setActive($$("[data-gender]"),btn);updateAvatar()}));
-$$("#furSwatches .swatch").forEach(btn=>btn.addEventListener("click",()=>{state.fur=btn.dataset.color;state.stripe=btn.dataset.stripe;setActive($$("#furSwatches .swatch"),btn);updateAvatar()}));
-$$("#eyeSwatches .swatch").forEach(btn=>btn.addEventListener("click",()=>{state.eyes=btn.dataset.color;setActive($$("#eyeSwatches .swatch"),btn);updateAvatar()}));
-$$("[data-outfit]").forEach(btn=>btn.addEventListener("click",()=>{if(btn.dataset.outfit==="Locked"){alert("This outfit unlocks at Chapter 10.");return}state.outfit=btn.dataset.outfit;setActive($$("[data-outfit]"),btn);updateAvatar()}));
-$$("[data-accessory]").forEach(btn=>btn.addEventListener("click",()=>{state.accessory=btn.dataset.accessory;setActive($$("[data-accessory]"),btn);updateAvatar()}));
-$("randomizeBtn").addEventListener("click",()=>{
-  const pick=a=>a[Math.floor(Math.random()*a.length)];
-  pick($$("[data-gender]")).click();
-  pick($$("#furSwatches .swatch")).click();
-  pick($$("#eyeSwatches .swatch")).click();
-  pick($$("[data-outfit]").filter(b=>b.dataset.outfit!=="Locked")).click();
-  pick($$("[data-accessory]")).click();
-});
-$("saveBtn").addEventListener("click",()=>{
-  const clone=$("avatarSvg").cloneNode(true);
-  clone.setAttribute("xmlns","http://www.w3.org/2000/svg");
-  const blob=new Blob([new XMLSerializer().serializeToString(clone)],{type:"image/svg+xml;charset=utf-8"});
-  const url=URL.createObjectURL(blob);
-  const img=new Image();
-  img.onload=()=>{
-    const canvas=document.createElement("canvas");canvas.width=1520;canvas.height=1520;
-    canvas.getContext("2d").drawImage(img,0,0,1520,1520);
-    URL.revokeObjectURL(url);
-    const link=document.createElement("a");
-    link.download="my-tacocat-v4.png";
-    link.href=canvas.toDataURL("image/png");
-    link.click();
-  };
-  img.src=url;
-});
-updateAvatar();
+(() => {
+  "use strict";
+
+  const views = [
+    { file: "front.jpg", label: "FRONT VIEW", alt: "TacoCat front view" },
+    { file: "three-quarter.jpg", label: "THREE-QUARTER VIEW", alt: "TacoCat three-quarter view" },
+    { file: "right.jpg", label: "RIGHT VIEW", alt: "TacoCat right side view" },
+    { file: "back.jpg", label: "BACK VIEW", alt: "TacoCat back view" },
+    { file: "left.jpg", label: "LEFT VIEW", alt: "TacoCat left side view" }
+  ];
+
+  const image = document.getElementById("avatarImage");
+  const label = document.getElementById("viewLabel");
+  const dots = document.getElementById("viewDots");
+  const viewer = document.getElementById("viewer");
+  const toast = document.getElementById("toast");
+  let current = 0;
+  let touchStartX = null;
+  let toastTimer = null;
+
+  function showToast(message) {
+    toast.textContent = message;
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove("show"), 1800);
+  }
+
+  function renderDots() {
+    dots.innerHTML = "";
+    views.forEach((view, index) => {
+      const dot = document.createElement("button");
+      dot.type = "button";
+      dot.className = `view-dot${index === current ? " active" : ""}`;
+      dot.setAttribute("aria-label", `Show ${view.label.toLowerCase()}`);
+      dot.addEventListener("click", () => setView(index));
+      dots.appendChild(dot);
+    });
+  }
+
+  function setView(index) {
+    current = (index + views.length) % views.length;
+    const view = views[current];
+    image.classList.add("switching");
+    window.setTimeout(() => {
+      image.src = view.file;
+      image.alt = view.alt;
+      label.textContent = view.label;
+      renderDots();
+      image.classList.remove("switching");
+    }, 110);
+  }
+
+  function rotate(direction) {
+    setView(current + direction);
+  }
+
+  document.getElementById("rotateLeft").addEventListener("click", () => rotate(-1));
+  document.getElementById("rotateRight").addEventListener("click", () => rotate(1));
+  document.getElementById("randomView").addEventListener("click", () => {
+    let next = current;
+    while (next === current) next = Math.floor(Math.random() * views.length);
+    setView(next);
+  });
+
+  document.getElementById("saveView").addEventListener("click", async () => {
+    try {
+      const response = await fetch(views[current].file);
+      if (!response.ok) throw new Error("Image unavailable");
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+      anchor.href = url;
+      anchor.download = `TacoCat-${views[current].label.toLowerCase().replaceAll(" ", "-")}.jpg`;
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      URL.revokeObjectURL(url);
+      showToast("TacoCat view saved");
+    } catch (error) {
+      showToast("Hold the image to save it");
+    }
+  });
+
+  viewer.addEventListener("touchstart", event => {
+    touchStartX = event.changedTouches[0].clientX;
+  }, { passive: true });
+
+  viewer.addEventListener("touchend", event => {
+    if (touchStartX === null) return;
+    const difference = event.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(difference) > 45) rotate(difference < 0 ? 1 : -1);
+    touchStartX = null;
+  }, { passive: true });
+
+  document.addEventListener("keydown", event => {
+    if (event.key === "ArrowLeft") rotate(-1);
+    if (event.key === "ArrowRight") rotate(1);
+  });
+
+  document.querySelectorAll("[data-group]").forEach(button => {
+    button.addEventListener("click", () => {
+      if (button.disabled) return;
+      const group = button.dataset.group;
+      document.querySelectorAll(`[data-group="${group}"]`).forEach(item => item.classList.remove("active"));
+      button.classList.add("active");
+
+      if (group !== "appearance") {
+        showToast("Visual layer coming in the next build");
+      } else {
+        showToast(`${button.textContent.trim()} selected`);
+      }
+    });
+  });
+
+  image.addEventListener("error", () => {
+    image.alt = "This TacoCat view could not be loaded";
+    showToast("One image file is missing");
+  });
+
+  renderDots();
+})();
