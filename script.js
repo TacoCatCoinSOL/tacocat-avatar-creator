@@ -1,128 +1,98 @@
-const state = {
-  gender: "masculine",
-  fur: "#d89a62",
-  eyes: "#69d2ff",
-  outfit: "Classic",
-  accessory: "None"
-};
+const views = [
+  {src:"front.jpg", label:"FRONT"},
+  {src:"right.jpg", label:"RIGHT SIDE"},
+  {src:"back.jpg", label:"BACK"},
+  {src:"left.jpg", label:"LEFT SIDE"},
+  {src:"three-quarter.jpg", label:"FRONT 3/4"}
+];
 
-const byId = (id) => document.getElementById(id);
-const all = (selector) => [...document.querySelectorAll(selector)];
+let index = 0;
+let dragging = false;
+let startX = 0;
+let lastStepX = 0;
 
-function setActive(buttons, activeButton) {
-  buttons.forEach((button) => button.classList.remove("active"));
-  activeButton.classList.add("active");
+const image = document.getElementById("avatarImage");
+const label = document.getElementById("viewLabel");
+const viewer = document.getElementById("viewer");
+const dots = document.getElementById("dots");
+
+views.forEach((_, i) => {
+  const dot = document.createElement("button");
+  dot.className = "dot" + (i === 0 ? " active" : "");
+  dot.setAttribute("aria-label", `View ${i + 1}`);
+  dot.addEventListener("click", () => setView(i));
+  dots.appendChild(dot);
+});
+
+function setView(next){
+  index = (next + views.length) % views.length;
+  image.style.opacity = "0.25";
+  setTimeout(() => {
+    image.src = views[index].src;
+    image.alt = `TacoCat ${views[index].label.toLowerCase()} view`;
+    label.textContent = views[index].label;
+    [...dots.children].forEach((dot, i) => dot.classList.toggle("active", i === index));
+    image.style.opacity = "1";
+  }, 80);
 }
 
-function updateAvatar() {
-  ["head", "body", "leftEar", "rightEar"].forEach((id) => byId(id).setAttribute("fill", state.fur));
-  ["leftEye", "rightEye"].forEach((id) => byId(id).setAttribute("fill", state.eyes));
+function rotate(direction){ setView(index + direction); }
 
-  byId("feminineDetails").style.display = state.gender === "feminine" ? "block" : "none";
+document.getElementById("rotateLeft").addEventListener("click", () => rotate(-1));
+document.getElementById("rotateRight").addEventListener("click", () => rotate(1));
 
-  ["Classic", "Hoodie", "Space"].forEach((name) => {
-    byId(`outfit${name}`).style.display = state.outfit === name ? "block" : "none";
-  });
-
-  ["Glasses", "Headset", "Bandana"].forEach((name) => {
-    byId(`accessory${name}`).style.display = state.accessory === name ? "block" : "none";
-  });
-
-  byId("lockedOverlay").style.display = state.accessory === "Chapter10" ? "block" : "none";
+function pointerStart(x){
+  dragging = true;
+  startX = x;
+  lastStepX = x;
 }
 
-all("[data-gender]").forEach((button) => {
+function pointerMove(x){
+  if(!dragging) return;
+  const delta = x - lastStepX;
+  if(Math.abs(delta) >= 55){
+    rotate(delta < 0 ? 1 : -1);
+    lastStepX = x;
+  }
+}
+
+function pointerEnd(){ dragging = false; }
+
+viewer.addEventListener("pointerdown", e => {
+  viewer.setPointerCapture(e.pointerId);
+  pointerStart(e.clientX);
+});
+viewer.addEventListener("pointermove", e => pointerMove(e.clientX));
+viewer.addEventListener("pointerup", pointerEnd);
+viewer.addEventListener("pointercancel", pointerEnd);
+
+document.getElementById("saveView").addEventListener("click", async () => {
+  const response = await fetch(views[index].src);
+  const blob = await response.blob();
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `tacocat-${views[index].label.toLowerCase().replaceAll(" ","-")}.jpg`;
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+});
+
+document.querySelectorAll(".segmented button").forEach(button => {
   button.addEventListener("click", () => {
-    state.gender = button.dataset.gender;
-    setActive(all("[data-gender]"), button);
-    updateAvatar();
+    document.querySelectorAll(".segmented button").forEach(b => b.classList.remove("active"));
+    button.classList.add("active");
   });
 });
-
-all("#furSwatches .swatch").forEach((button) => {
+document.querySelectorAll(".swatch").forEach(button => {
   button.addEventListener("click", () => {
-    state.fur = button.dataset.color;
-    setActive(all("#furSwatches .swatch"), button);
-    updateAvatar();
+    document.querySelectorAll(".swatch").forEach(b => b.classList.remove("active"));
+    button.classList.add("active");
   });
 });
-
-all("#eyeSwatches .swatch").forEach((button) => {
+document.querySelectorAll(".option").forEach(button => {
   button.addEventListener("click", () => {
-    state.eyes = button.dataset.color;
-    setActive(all("#eyeSwatches .swatch"), button);
-    updateAvatar();
+    const group = button.parentElement.querySelectorAll(".option");
+    group.forEach(b => b.classList.remove("active"));
+    button.classList.add("active");
   });
 });
-
-all("[data-outfit]").forEach((button) => {
-  button.addEventListener("click", () => {
-    state.outfit = button.dataset.outfit;
-    setActive(all("[data-outfit]"), button);
-    updateAvatar();
-  });
-});
-
-all("[data-accessory]").forEach((button) => {
-  button.addEventListener("click", () => {
-    state.accessory = button.dataset.accessory;
-    setActive(all("[data-accessory]"), button);
-    updateAvatar();
-  });
-});
-
-byId("randomizeBtn").addEventListener("click", () => {
-  const pick = (items) => items[Math.floor(Math.random() * items.length)];
-  const genderButtons = all("[data-gender]");
-  const furButtons = all("#furSwatches .swatch");
-  const eyeButtons = all("#eyeSwatches .swatch");
-  const outfitButtons = all("[data-outfit]");
-  const accessoryButtons = all("[data-accessory]").filter((b) => b.dataset.accessory !== "Chapter10");
-
-  const gender = pick(genderButtons);
-  const fur = pick(furButtons);
-  const eyes = pick(eyeButtons);
-  const outfit = pick(outfitButtons);
-  const accessory = pick(accessoryButtons);
-
-  gender.click();
-  fur.click();
-  eyes.click();
-  outfit.click();
-  accessory.click();
-});
-
-byId("downloadBtn").addEventListener("click", () => {
-  const svg = byId("avatarSvg");
-  const clone = svg.cloneNode(true);
-  clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-
-  const serializer = new XMLSerializer();
-  const svgText = serializer.serializeToString(clone);
-  const svgBlob = new Blob([svgText], { type: "image/svg+xml;charset=utf-8" });
-  const url = URL.createObjectURL(svgBlob);
-  const image = new Image();
-
-  image.onload = () => {
-    const canvas = document.createElement("canvas");
-    canvas.width = 1200;
-    canvas.height = 1200;
-    const context = canvas.getContext("2d");
-    context.drawImage(image, 0, 0, canvas.width, canvas.height);
-    URL.revokeObjectURL(url);
-
-    const link = document.createElement("a");
-    link.download = "my-tacocat-avatar.png";
-    link.href = canvas.toDataURL("image/png");
-    link.click();
-  };
-
-  image.onerror = () => {
-    URL.revokeObjectURL(url);
-    alert("The image could not be saved on this browser.");
-  };
-
-  image.src = url;
-});
-
-updateAvatar();
