@@ -2,7 +2,7 @@
   "use strict";
 
   const orangeViews = [
-    { file: "front.jpg", label: "FRONT VIEW", alt: "Orange TacoCat front view" },
+    { file: "front.png", label: "FRONT VIEW", alt: "Orange TacoCat front view" },
     { file: "three-quarter.jpg", label: "THREE-QUARTER VIEW", alt: "Orange TacoCat three-quarter view" },
     { file: "right.jpg", label: "RIGHT VIEW", alt: "Orange TacoCat right side view" },
     { file: "back.jpg", label: "BACK VIEW", alt: "Orange TacoCat back view" },
